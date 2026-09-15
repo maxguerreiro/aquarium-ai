@@ -2,6 +2,7 @@ import random
 import pygame
 
 from fish import Fish
+from shark import Shark
 
 
 pygame.init()
@@ -40,7 +41,11 @@ for i in range(10):
 
     fishes.append(fish)
 
+shark = Shark(WIDTH / 2, HEIGHT / 2, 200)  # Create a shark instance at the center of the screen
+
 running = True
+
+score = 0  # Initialize score
 
 while running:
 
@@ -54,11 +59,29 @@ while running:
     for fish in fishes:
         fish.update(dt, WIDTH, HEIGHT)
 
+    # Update shark position
+    shark.update(dt, WIDTH, HEIGHT)
+
+    for fish in fishes[:]:  # Iterate over a copy of the list
+
+        if shark.collide_with(fish):
+            fishes.remove(fish)  # Remove the fish if the shark collides with it
+
+            score += 1  # Increment score for each fish eaten
+
+
     screen.fill((20, 100, 150))  # Fill the screen with a color (e.g., light blue for water)
 
     for fish in fishes:
         fish.draw(screen)  # Draw each fish
-    
+
+    shark.draw(screen)  # Draw the shark
+
+    font = pygame.font.Font(None, 36)
+
+    score_text = font.render(f"Score: {score}", True, (255, 255, 255))
+    screen.blit(score_text, (10, 10))
+
     # Update the display
     pygame.display.flip()
 
