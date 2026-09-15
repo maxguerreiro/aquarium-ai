@@ -30,13 +30,11 @@ for i in range(10):
         random.uniform(-1, 1)
     )
 
-    direction = direction.normalize()
-
     # Ensure the direction is not zero to avoid division by zero
     if direction.length() == 0:
-        direction = pygame.Vector2(1, 0)
+            direction = pygame.Vector2(1, 0)
     else:
-        direction = direction.normalize()
+            direction = direction.normalize()
 
     fish = Fish(x, y, speed, direction)
 

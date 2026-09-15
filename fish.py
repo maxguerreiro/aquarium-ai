@@ -26,7 +26,56 @@ class Fish:
             
 
     def draw(self, screen):
-        pygame.draw.circle(
-            screen, 
-            (255, 100, 50), 
-            (int(self.position.x), int(self.position.y)), self.radius)  # Draw the fish as a circle
+
+        # Direção perpendicular à direção do movimento
+        perpendicular = pygame.Vector2(
+            -self.direction.y,
+            self.direction.x
+        )
+
+        # Ponta da cabeça
+        front = self.position + self.direction * self.radius
+
+        # Parte superior e inferior do corpo
+        top = self.position + perpendicular * self.radius * 0.6
+        bottom = self.position - perpendicular * self.radius * 0.6
+
+        # Parte traseira
+        back = self.position - self.direction * self.radius
+
+        # Corpo
+        pygame.draw.polygon(
+            screen,
+            (255, 100, 50),
+            [
+                front,
+                top,
+                back,
+                bottom
+            ]
+        )
+
+        # Cauda
+        tail_center = self.position - self.direction * self.radius
+
+        tail_top = (
+            tail_center
+            + perpendicular * self.radius * 0.7
+            - self.direction * self.radius * 0.8
+        )
+
+        tail_bottom = (
+            tail_center
+            - perpendicular * self.radius * 0.7
+            - self.direction * self.radius * 0.8
+        )
+
+        pygame.draw.polygon(
+            screen,
+            (255, 180, 50),
+            [
+                tail_center,
+                tail_top,
+                tail_bottom
+            ]
+    )
