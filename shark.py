@@ -80,3 +80,29 @@ class Shark:
     def collide_with(self, fish):
         distance = self.position.distance_to(fish.position)
         return distance <= (self.radius + fish.radius)
+
+    def find_closest_fish(self, fishes):
+        closest_fish = None
+        min_distance = float('inf')
+
+        for fish in fishes:
+            distance = self.position.distance_to(fish.position)
+            if distance < min_distance:
+                min_distance = distance
+                closest_fish = fish
+
+        return closest_fish
+
+    def hunt(self, dt, fishers):
+
+        target = self.find_closest_fish(fishers)
+
+        if target is None:
+            return  # No fish to hunt
+
+        direction = target.position - self.position
+
+        if direction.length() > 0:
+            direction = direction.normalize()
+            self.position += direction * self.speed * dt
+            self.direction = direction  # Update the shark's direction to face the target

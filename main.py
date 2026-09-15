@@ -60,7 +60,9 @@ while running:
         fish.update(dt, WIDTH, HEIGHT)
 
     # Update shark position
-    shark.update(dt, WIDTH, HEIGHT)
+    shark.hunt(dt, fishes)
+
+    closest_fish = shark.find_closest_fish(fishes)
 
     for fish in fishes[:]:  # Iterate over a copy of the list
 
@@ -79,6 +81,15 @@ while running:
         fish.draw(screen)  # Draw each fish
 
     shark.draw(screen)  # Draw the shark
+
+    if closest_fish is not None:
+        pygame.draw.line(
+            screen,
+            (255, 255, 255),
+            shark.position,
+            closest_fish.position,
+            2
+        )
 
     font = pygame.font.Font(None, 36)
 
