@@ -34,6 +34,11 @@ class Shark:
             min(screen_height - self.radius, self.position.y)
         )
 
+        self.position.x = max(
+            self.radius,
+            min(screen_width - self.radius, self.position.x)
+        )
+
     def draw(self, screen):
 
             perpendicular = pygame.Vector2(
