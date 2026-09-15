@@ -16,10 +16,16 @@ pygame.display.set_caption("Aquarium AI")
 
 clock = pygame.time.Clock()
 
-# Create fish instances
-fishes = [] 
+running = True
 
-for i in range(10):
+score = 0  # Initialize score
+
+# Create fish instances
+fishes = []
+# Create a shark instance at the center of the screen
+shark = Shark(WIDTH / 2, HEIGHT / 2, 200)  
+
+def create_random_fish():
 
     x = random.randint(50, WIDTH - 50)
     y = random.randint(50, HEIGHT - 50)
@@ -31,21 +37,15 @@ for i in range(10):
         random.uniform(-1, 1)
     )
 
-    # Ensure the direction is not zero to avoid division by zero
     if direction.length() == 0:
-            direction = pygame.Vector2(1, 0)
+        direction = pygame.Vector2(1, 0)
     else:
-            direction = direction.normalize()
+        direction = direction.normalize()
 
-    fish = Fish(x, y, speed, direction)
+    return Fish(x, y, speed, direction)
 
-    fishes.append(fish)
-
-shark = Shark(WIDTH / 2, HEIGHT / 2, 200)  # Create a shark instance at the center of the screen
-
-running = True
-
-score = 0  # Initialize score
+for i in range(10):
+    fishes.append(create_random_fish())
 
 while running:
 
@@ -68,6 +68,9 @@ while running:
             fishes.remove(fish)  # Remove the fish if the shark collides with it
 
             score += 1  # Increment score for each fish eaten
+
+            newFish = create_random_fish()
+            fishes.append(newFish)
 
 
     screen.fill((20, 100, 150))  # Fill the screen with a color (e.g., light blue for water)
