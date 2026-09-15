@@ -1,5 +1,8 @@
-from fish import Fish
+import random
 import pygame
+
+from fish import Fish
+
 
 pygame.init()
 
@@ -12,9 +15,32 @@ pygame.display.set_caption("Aquarium AI")
 
 clock = pygame.time.Clock()
 
-# Fish
-fish = Fish(100, 350, 200)  # Starting position (100, 350) and speed of 200 pixels per second
-fish2 = Fish(500, 200, 100)  # Another fish with different starting position and speed
+# Create fish instances
+fishes = [] 
+
+for i in range(10):
+
+    x = random.randint(50, WIDTH - 50)
+    y = random.randint(50, HEIGHT - 50)
+
+    speed = random.randint(50, 150)
+
+    direction = pygame.Vector2(
+        random.uniform(-1, 1),
+        random.uniform(-1, 1)
+    )
+
+    direction = direction.normalize()
+
+    # Ensure the direction is not zero to avoid division by zero
+    if direction.length() == 0:
+        direction = pygame.Vector2(1, 0)
+    else:
+        direction = direction.normalize()
+
+    fish = Fish(x, y, speed, direction)
+
+    fishes.append(fish)
 
 running = True
 
@@ -27,14 +53,14 @@ while running:
             running = False
 
     # Update fish position
-    fish.update(dt, WIDTH)
-    fish2.update(dt, WIDTH)
+    for fish in fishes:
+        fish.update(dt, WIDTH, HEIGHT)
 
     screen.fill((20, 100, 150))  # Fill the screen with a color (e.g., light blue for water)
 
-    fish.draw(screen)
-    fish2.draw(screen)
-
+    for fish in fishes:
+        fish.draw(screen)  # Draw each fish
+    
     # Update the display
     pygame.display.flip()
 
