@@ -9,20 +9,34 @@ class Fish:
 
     def update(self, dt, screen_width, screen_height):
 
+    # Update position
         self.position += self.direction * self.speed * dt
 
-        # Update the position based on the direction and speed
-        if self.position.x - self.radius > screen_width:
-            self.position.x = -self.radius
+        # Horizontal collision
+        if self.position.x - self.radius < 0:
 
-        elif self.position.x + self.radius < 0:
-            self.position.x = screen_width + self.radius
+            self.position.x = self.radius
 
-        if self.position.y - self.radius > screen_height:
-            self.position.y = -self.radius
+            self.direction.x *= -1
 
-        elif self.position.y + self.radius < 0:
-            self.position.y = screen_height + self.radius
+        elif self.position.x + self.radius > screen_width:
+
+            self.position.x = screen_width - self.radius
+
+            self.direction.x *= -1
+
+        # Vertical collision
+        if self.position.y - self.radius < 0:
+
+            self.position.y = self.radius
+
+            self.direction.y *= -1
+
+        elif self.position.y + self.radius > screen_height:
+
+            self.position.y = screen_height - self.radius
+
+            self.direction.y *= -1
             
 
     def draw(self, screen):

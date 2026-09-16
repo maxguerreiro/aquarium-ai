@@ -29,8 +29,33 @@ class Aquarium:
 
     def create_random_fish(self):
 
-        x = random.randint(50, self.width - 50)
-        y = random.randint(50, self.height - 50)
+        radius = 20
+
+        for _ in range(100):
+
+            x = random.randint(
+                radius,
+                self.width - radius
+            )
+
+            y = random.randint(
+                radius,
+                self.height - radius
+            )
+
+            position = pygame.Vector2(x, y)
+
+            distance = position.distance_to(
+                self.shark.position
+            )
+
+            if distance > self.shark.radius + radius + 50:
+                break
+
+        else:
+            raise RuntimeError(
+                "Não foi possível encontrar uma posição válida para o peixe."
+            )
 
         speed = random.randint(50, 150)
 
@@ -39,7 +64,7 @@ class Aquarium:
             random.uniform(-1, 1)
         )
 
-        if direction.length() == 0:
+        if direction.length_squared() == 0:
             direction = pygame.Vector2(1, 0)
         else:
             direction = direction.normalize()
