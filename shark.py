@@ -93,16 +93,39 @@ class Shark:
 
         return closest_fish
 
-    def hunt(self, dt, fishers):
+    def hunt(self, fishers):
 
         target = self.find_closest_fish(fishers)
 
         if target is None:
-            return  # No fish to hunt
+            return pygame.Vector2(0, 0)  # No fish to hunt
 
         direction = target.position - self.position
 
         if direction.length() > 0:
-            direction = direction.normalize()
-            self.position += direction * self.speed * dt
-            self.direction = direction  # Update the shark's direction to face the target
+            return direction.normalize()
+
+        return pygame.Vector2(0, 0)
+
+    def move(self, action, dt, screen_width, screen_height):
+
+        movement = pygame.Vector2(action)
+
+        if movement.length() > 0:
+
+            movement = movement.normalize()
+
+            self.direction = movement
+
+            self.position += movement * self.speed * dt
+
+        # Aquarium boundaries
+        self.position.x = max(
+            self.radius,
+            min(screen_width - self.radius, self.position.x)
+        )
+
+        self.position.y = max(
+            self.radius,
+            min(screen_height - self.radius, self.position.y)
+        )

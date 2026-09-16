@@ -46,14 +46,23 @@ class Aquarium:
 
         return Fish(x, y, speed, direction)
 
-    def update(self, dt):
+    def update(self, dt, action=None):
 
         # Update fishes
         for fish in self.fishes:
             fish.update(dt, self.width, self.height)
 
-        # Update shark
-        self.shark.hunt(dt, self.fishes)
+        # Choose action
+        if action is None:
+            action = self.shark.hunt(self.fishes)
+
+        # Move shark
+        self.shark.move(
+            action,
+            dt,
+            self.width,
+            self.height
+            )
 
         # Check collisions
         for fish in self.fishes[:]:
