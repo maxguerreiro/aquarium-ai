@@ -1,5 +1,6 @@
 import random
 import pygame
+import math
 
 from fish import Fish
 from shark import Shark
@@ -14,7 +15,7 @@ class Aquarium:
 
         self.fish_count = fish_count
 
-        self.max_steps = 300
+        self.max_steps = 1800
 
         self.reset()
 
@@ -152,3 +153,55 @@ class Aquarium:
 
     def is_done(self):
         return self.current_step >= self.max_steps
+
+    def step(self, action):
+
+        if self.is_done():
+            raise RuntimeError(
+                "Episódio finalizado. Execute reset() antes de continuar."
+            )
+
+        dt = 1 / 60
+
+        # Target before action
+        target = self.shark.find_closest_fish(self.fishes)
+
+        distance_before = 0.0
+
+        if target is not None:
+            distance_before = self.shark.position.distance_to(
+                target.position
+            )
+
+        # Score before action
+        score_before = self.score
+
+        # Execute action
+        self.update(dt, action)
+
+        # Base reward
+        reward = -0.001
+
+        # Reward for eating fish
+        fishes_eaten = self.score - score_before
+
+        reward += fishes_eaten * 10
+
+        # Reward for approaching the original target
+        if target is not None and target in self.fishes:
+
+            distance_after = self.shark.position.distance_to(
+                target.position
+            )
+
+            diagonal = math.hypot(self.width, self.height)
+
+            reward += 2 * (
+                distance_before - distance_after
+            ) / diagonal
+
+        observation = self.get_observation()
+
+        done = self.is_done()
+
+        return observation, reward, done
