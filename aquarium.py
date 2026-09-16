@@ -1,6 +1,7 @@
 import random
 import pygame
 import math
+import random
 
 from fish import Fish
 from shark import Shark
@@ -17,6 +18,8 @@ class Aquarium:
 
         self.max_steps = 1800
 
+        self.rng = random.Random()
+
         self.reset()
 
     def create_random_fish(self):
@@ -25,12 +28,12 @@ class Aquarium:
 
         for _ in range(100):
 
-            x = random.randint(
+            x = self.rng.randint(
                 radius,
                 self.width - radius
             )
 
-            y = random.randint(
+            y = self.rng.randint(
                 radius,
                 self.height - radius
             )
@@ -49,19 +52,24 @@ class Aquarium:
                 "Não foi possível encontrar uma posição válida para o peixe."
             )
 
-        speed = random.randint(50, 150)
+        speed = self.rng.randint(50, 150)
 
         direction = pygame.Vector2(
-            random.uniform(-1, 1),
-            random.uniform(-1, 1)
+            self.rng.uniform(-1, 1),
+            self.rng.uniform(-1, 1)
         )
 
         if direction.length_squared() == 0:
             direction = pygame.Vector2(1, 0)
-        else:
-            direction = direction.normalize()
 
-        return Fish(x, y, speed, direction)
+        direction = direction.normalize()
+
+        return Fish(
+            x,
+            y,
+            speed,
+            direction
+        )
 
     def update(self, dt, action=None):
 
@@ -132,7 +140,10 @@ class Aquarium:
             shark.direction.y
         ]
 
-    def reset(self):
+    def reset(self, seed=None):
+
+        if seed is not None:
+            self.rng.seed(seed)
 
         self.score = 0
 
