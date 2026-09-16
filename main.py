@@ -8,7 +8,6 @@ pygame.init()
 WIDTH, HEIGHT = 1000, 700
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-
 pygame.display.set_caption("Aquarium AI")
 
 clock = pygame.time.Clock()
@@ -21,7 +20,9 @@ running = True
 
 while running:
 
-    dt = clock.tick(60) / 1000
+    clock.tick(60)
+
+    dt = 1 / 60
 
     # Events
     for event in pygame.event.get():
@@ -32,9 +33,13 @@ while running:
     # Update simulation
     aquarium.update(dt)
 
-    observation = aquarium.get_observation()
+    # Episode control
+    if aquarium.is_done():
 
-    print(observation)
+        print("Episódio finalizado.")
+        print(f"Pontuação final: {aquarium.score}")
+
+        aquarium.reset()
 
     # Render
     screen.fill((20, 100, 150))

@@ -14,18 +14,9 @@ class Aquarium:
 
         self.fish_count = fish_count
 
-        self.score = 0
+        self.max_steps = 300
 
-        self.shark = Shark(
-            width / 2,
-            height / 2,
-            250
-        )
-
-        self.fishes = []
-
-        for _ in range(self.fish_count):
-            self.fishes.append(self.create_random_fish())
+        self.reset()
 
     def create_random_fish(self):
 
@@ -72,6 +63,8 @@ class Aquarium:
         return Fish(x, y, speed, direction)
 
     def update(self, dt, action=None):
+
+        self.current_step += 1
 
         # Update fishes
         for fish in self.fishes:
@@ -137,3 +130,25 @@ class Aquarium:
             shark.direction.x,
             shark.direction.y
         ]
+
+    def reset(self):
+
+        self.score = 0
+
+        self.current_step = 0
+
+        self.shark = Shark(
+            self.width / 2,
+            self.height / 2,
+            250
+        )
+
+        self.fishes = []
+
+        for _ in range(self.fish_count):
+            self.fishes.append(self.create_random_fish())
+
+        return self.get_observation()
+
+    def is_done(self):
+        return self.current_step >= self.max_steps
