@@ -32,6 +32,10 @@ while running:
     # Update simulation
     aquarium.update(dt)
 
+    observation = aquarium.get_observation()
+
+    print(observation)
+
     # Render
     screen.fill((20, 100, 150))
 

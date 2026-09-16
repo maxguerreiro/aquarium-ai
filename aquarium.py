@@ -81,3 +81,34 @@ class Aquarium:
             fish.draw(screen)
 
         self.shark.draw(screen)
+
+    def get_observation(self):
+
+        shark = self.shark
+
+        target = self.shark.find_closest_fish(self.fishes)
+
+        #No target fish
+        if target is None:
+            return [
+                shark.position.x / self.width,
+                shark.position.y / self.height,
+                0,
+                0,
+                shark.direction.x,
+                shark.direction.y
+            ]
+
+        #Relative position
+        relative_position = target.position - shark.position
+
+        return [
+            shark.position.x / self.width,
+            shark.position.y / self.height,
+
+            relative_position.x / self.width,
+            relative_position.y / self.height,
+            
+            shark.direction.x,
+            shark.direction.y
+        ]
