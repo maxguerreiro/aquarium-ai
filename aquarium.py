@@ -140,6 +140,29 @@ class Aquarium:
             shark.direction.y
         ]
 
+    def get_observation_v2(self):
+
+        observation = self.get_observation()
+
+        target = self.shark.find_closest_fish(
+            self.fishes
+        )
+
+        if target is None:
+
+            observation.extend([0.0, 0.0])
+
+        else:
+
+            velocity = target.direction * target.speed
+
+            observation.extend([
+                velocity.x / 150,
+                velocity.y / 150
+            ])
+
+        return observation
+
     def reset(self, seed=None):
 
         if seed is not None:
