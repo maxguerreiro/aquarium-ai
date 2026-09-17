@@ -25,4 +25,4 @@ model.save("shark_ppo_model_v2")
 env.close()
 
 print("\nTreinamento V2 concluído!")
-print("Modelo salvo: shark_ppo_v2.zip")
+print("Modelo salvo: shark_ppo_model_v2.zip")
