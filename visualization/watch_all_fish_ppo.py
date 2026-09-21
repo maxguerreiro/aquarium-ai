@@ -2,9 +2,10 @@
 
 import numpy as np
 import pygame
+from pathlib import Path
 from stable_baselines3 import PPO
 
-from aquarium import Aquarium
+from aquarium_ai.aquarium import Aquarium
 
 
 WIDTH = 1000
@@ -24,8 +25,9 @@ def main():
     aquarium = Aquarium(WIDTH, HEIGHT, fish_count=FISH_COUNT)
 
     # Load each frozen policy once, before the simulation loop.
-    shark_model = PPO.load("shark_ppo_model")
-    fish_model = PPO.load("fish_ppo_model")
+    models_dir = Path(__file__).resolve().parents[1] / "models"
+    shark_model = PPO.load(models_dir / "shark_ppo_model.zip")
+    fish_model = PPO.load(models_dir / "fish_ppo_model.zip")
 
     aquarium.reset(seed=42)
     episode = 1

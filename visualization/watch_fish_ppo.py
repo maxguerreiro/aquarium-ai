@@ -1,7 +1,8 @@
 import pygame
+from pathlib import Path
 
 from stable_baselines3 import PPO
-from fish_env import FishEnv
+from aquarium_ai.fish_env import FishEnv
 
 
 # Window settings
@@ -31,7 +32,8 @@ def main():
     env = FishEnv()
 
     # Load trained fish
-    fish_model = PPO.load("fish_ppo_model")
+    model_path = Path(__file__).resolve().parents[1] / "models" / "fish_ppo_model.zip"
+    fish_model = PPO.load(model_path)
 
     # Reset environment
     observation, info = env.reset(seed=42)

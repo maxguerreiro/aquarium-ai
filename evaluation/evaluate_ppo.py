@@ -1,17 +1,16 @@
 import statistics
+from pathlib import Path
 
 from stable_baselines3 import PPO
-from aquarium_env import AquariumEnv
+from aquarium_ai.aquarium_env import AquariumEnv
 
 
 EPISODES = 100
+MODEL_PATH = Path(__file__).resolve().parents[1] / "models" / "shark_ppo_model.zip"
 
 env = AquariumEnv()
 
-model = PPO.load(
-    "shark_ppo_model",
-    env=env
-)
+model = PPO.load(MODEL_PATH, env=env)
 
 scores = []
 rewards = []

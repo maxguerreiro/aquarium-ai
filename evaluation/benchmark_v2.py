@@ -1,20 +1,22 @@
 import statistics
+from pathlib import Path
 
 import numpy as np
 import pygame
 
 from stable_baselines3 import PPO
 
-from aquarium_env import AquariumEnv
-from aquarium_env_v2 import AquariumEnvV2
+from aquarium_ai.aquarium_env import AquariumEnv
+from aquarium_ai.aquarium_env_v2 import AquariumEnvV2
 
 
 EPISODES = 100
 BASE_SEED = 1000
 
 
-model_v1 = PPO.load("shark_ppo_model")
-model_v2 = PPO.load("shark_ppo_model_v2")
+MODELS_DIR = Path(__file__).resolve().parents[1] / "models"
+model_v1 = PPO.load(MODELS_DIR / "shark_ppo_model.zip")
+model_v2 = PPO.load(MODELS_DIR / "shark_ppo_model_v2.zip")
 
 
 def evaluate(controller, seed):

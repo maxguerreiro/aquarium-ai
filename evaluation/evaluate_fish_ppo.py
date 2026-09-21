@@ -1,13 +1,14 @@
 """Compare a trained fish PPO against a random fish."""
 
 import statistics
+from pathlib import Path
 
 from stable_baselines3 import PPO
-from fish_env import FishEnv
+from aquarium_ai.fish_env import FishEnv
 
 
 EPISODES = 30
-MODEL_PATH = "fish_ppo_model"
+MODEL_PATH = Path(__file__).resolve().parents[1] / "models" / "fish_ppo_model.zip"
 
 
 def evaluate(env, model=None):

@@ -3,7 +3,7 @@ import numpy as np
 import pygame
 
 from gymnasium import spaces
-from aquarium import Aquarium
+from aquarium_ai.aquarium import Aquarium
 
 
 class AquariumEnv(gym.Env):

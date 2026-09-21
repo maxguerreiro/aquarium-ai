@@ -1,6 +1,6 @@
 import pygame
 
-from fish import Fish
+from aquarium_ai.fish import Fish
 
 
 pygame.init()

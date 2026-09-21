@@ -3,8 +3,8 @@ import pygame
 import math
 import random
 
-from fish import Fish
-from shark import Shark
+from aquarium_ai.fish import Fish
+from aquarium_ai.shark import Shark
 
 
 class Aquarium:

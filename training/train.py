@@ -1,6 +1,11 @@
+from pathlib import Path
+
 from stable_baselines3 import PPO
 
-from aquarium_env import AquariumEnv
+from aquarium_ai.aquarium_env import AquariumEnv
+
+
+MODEL_PATH = Path(__file__).resolve().parents[1] / "models" / "shark_ppo_model"
 
 #Create training environment
 env = AquariumEnv()
@@ -16,7 +21,7 @@ model = PPO("MlpPolicy",
 model.learn(total_timesteps=100_000)
 
 #Save model
-model.save("shark_ppo_model")
+model.save(MODEL_PATH)
 
 env.close()
 

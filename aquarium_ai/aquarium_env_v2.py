@@ -2,7 +2,7 @@ import numpy as np
 
 from gymnasium import spaces
 
-from aquarium_env import AquariumEnv
+from aquarium_ai.aquarium_env import AquariumEnv
 
 
 class AquariumEnvV2(AquariumEnv):

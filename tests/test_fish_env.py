@@ -1,7 +1,7 @@
 import numpy as np
 from gymnasium.utils.env_checker import check_env
 
-from fish_env import FishEnv
+from aquarium_ai.fish_env import FishEnv
 
 
 env = FishEnv()

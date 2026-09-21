@@ -12,4 +12,8 @@ __pycache__/
 .DS_Store
 Thumbs.db
 
-.zip
+# Checkpoints PPO temporários. Os modelos de demonstração são preservados.
+*.zip
+!models/shark_ppo_model.zip
+!models/fish_ppo_model.zip
+!models/shark_ppo_model_v2.zip

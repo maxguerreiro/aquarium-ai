@@ -3,7 +3,7 @@ import statistics
 
 import pygame
 
-from aquarium import Aquarium
+from aquarium_ai.aquarium import Aquarium
 
 
 EPISODES = 100

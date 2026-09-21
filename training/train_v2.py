@@ -1,6 +1,11 @@
+from pathlib import Path
+
 from stable_baselines3 import PPO
 
-from aquarium_env_v2 import AquariumEnvV2
+from aquarium_ai.aquarium_env_v2 import AquariumEnvV2
+
+
+MODEL_PATH = Path(__file__).resolve().parents[1] / "models" / "shark_ppo_model_v2"
 
 
 # Create the new environment
@@ -20,7 +25,7 @@ model.learn(
 )
 
 # Save without overwriting V1
-model.save("shark_ppo_model_v2")
+model.save(MODEL_PATH)
 
 env.close()
 

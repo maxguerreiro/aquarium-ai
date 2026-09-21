@@ -1,6 +1,6 @@
 from gymnasium.utils.env_checker import check_env
 
-from aquarium_env_v2 import AquariumEnvV2
+from aquarium_ai.aquarium_env_v2 import AquariumEnvV2
 
 
 env = AquariumEnvV2()

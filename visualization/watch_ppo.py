@@ -1,8 +1,9 @@
 import pygame
 import numpy as np
+from pathlib import Path
 
 from stable_baselines3 import PPO
-from aquarium_env import AquariumEnv
+from aquarium_ai.aquarium_env import AquariumEnv
 
 
 pygame.init()
@@ -21,7 +22,8 @@ font = pygame.font.Font(None, 36)
 env = AquariumEnv()
 
 # Load trained model
-model = PPO.load("shark_ppo_model")
+MODEL_PATH = Path(__file__).resolve().parents[1] / "models" / "shark_ppo_model.zip"
+model = PPO.load(MODEL_PATH)
 
 # Initial observation
 observation, info = env.reset(seed=42)

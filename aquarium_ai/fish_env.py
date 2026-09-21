@@ -1,13 +1,14 @@
 """Gymnasium environment for training one fish against the frozen shark V1."""
 
 import math
+from pathlib import Path
 
 import gymnasium as gym
 import numpy as np
 from gymnasium import spaces
 from stable_baselines3 import PPO
 
-from aquarium import Aquarium
+from aquarium_ai.aquarium import Aquarium
 
 
 class FishEnv(gym.Env):
@@ -19,7 +20,7 @@ class FishEnv(gym.Env):
 
     metadata = {"render_modes": []}
 
-    def __init__(self, shark_model_path="shark_ppo_model"):
+    def __init__(self, shark_model_path=None):
         super().__init__()
 
         self.width = 1000
@@ -29,6 +30,12 @@ class FishEnv(gym.Env):
         self.aquarium = Aquarium(self.width, self.height, fish_count=10)
 
         # The model is loaded for inference only; FishEnv never calls learn().
+        if shark_model_path is None:
+            shark_model_path = (
+                Path(__file__).resolve().parent.parent
+                / "models"
+                / "shark_ppo_model.zip"
+            )
         self.shark_model = PPO.load(shark_model_path)
 
         self.action_space = spaces.Box(

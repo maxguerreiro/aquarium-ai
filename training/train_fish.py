@@ -1,12 +1,14 @@
 """Train a fish PPO policy against the frozen shark V1."""
 
+from pathlib import Path
+
 from stable_baselines3 import PPO
 
-from fish_env import FishEnv
+from aquarium_ai.fish_env import FishEnv
 
 
 TOTAL_TIMESTEPS = 100_000
-MODEL_PATH = "fish_ppo_model"
+MODEL_PATH = Path(__file__).resolve().parents[1] / "models" / "fish_ppo_model"
 
 
 def main():

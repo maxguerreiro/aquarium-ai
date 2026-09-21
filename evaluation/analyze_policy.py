@@ -1,15 +1,17 @@
 import math
 import statistics
+from pathlib import Path
 
 import pygame
 
 from stable_baselines3 import PPO
-from aquarium_env import AquariumEnv
+from aquarium_ai.aquarium_env import AquariumEnv
 
 
 env = AquariumEnv()
 
-model = PPO.load("shark_ppo_model")
+MODEL_PATH = Path(__file__).resolve().parents[1] / "models" / "shark_ppo_model.zip"
+model = PPO.load(MODEL_PATH)
 
 observation, info = env.reset(seed=42)
 
