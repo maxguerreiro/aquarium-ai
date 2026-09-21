@@ -7,6 +7,48 @@ class Fish:
         self.direction = pygame.Vector2(direction)  # Initial direction
         self.radius = 20
 
+
+    def move(self, action, dt, width, height):
+
+        direction = pygame.Vector2(
+            float(action[0]),
+            float(action[1])
+        )
+
+        # Avoid normalizing a zero vector
+        if direction.length_squared() > 0:
+
+            direction = direction.normalize()
+
+            self.direction = direction
+
+        # Move using the fish's existing speed
+        self.position += self.direction * self.speed * dt
+
+        # Keep the fish inside the aquarium
+        self.position.x = max(
+            self.radius,
+            min(width - self.radius, self.position.x)
+        )
+
+        self.position.y = max(
+            self.radius,
+            min(height - self.radius, self.position.y)
+        )
+
+    def get_observation(self, shark, width, height):
+
+        return [
+            self.position.x / width,
+            self.position.y / height,
+
+            (shark.position.x - self.position.x) / width,
+            (shark.position.y - self.position.y) / height,
+
+            self.direction.x,
+            self.direction.y
+        ]
+
     def update(self, dt, screen_width, screen_height):
 
     # Update position
@@ -93,3 +135,5 @@ class Fish:
                 tail_bottom
             ]
     )
+
+    
