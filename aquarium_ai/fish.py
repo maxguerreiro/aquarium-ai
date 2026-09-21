@@ -1,12 +1,18 @@
+from pathlib import Path
+
 import pygame
 
+
 class Fish:
+    _sprite = None
+    _sprite_path = Path(__file__).resolve().parent / "assets" / "sprites" / "fish.png"
+    _sprite_width = 40
+
     def __init__(self, x, y, speed, direction):
         self.position = pygame.Vector2(x, y)
         self.speed = speed
         self.direction = pygame.Vector2(direction)  # Initial direction
         self.radius = 20
-
 
     def move(self, action, dt, width, height):
 
@@ -51,7 +57,7 @@ class Fish:
 
     def update(self, dt, screen_width, screen_height):
 
-    # Update position
+        # Update position
         self.position += self.direction * self.speed * dt
 
         # Horizontal collision
@@ -79,61 +85,19 @@ class Fish:
             self.position.y = screen_height - self.radius
 
             self.direction.y *= -1
-            
+
+    @classmethod
+    def _load_sprite(cls):
+        if cls._sprite is None:
+            source = pygame.image.load(cls._sprite_path).convert_alpha()
+            width = cls._sprite_width
+            height = round(source.get_height() * width / source.get_width())
+            cls._sprite = pygame.transform.smoothscale(source, (width, height))
+        return cls._sprite
 
     def draw(self, screen):
-
-        # Direção perpendicular à direção do movimento
-        perpendicular = pygame.Vector2(
-            -self.direction.y,
-            self.direction.x
-        )
-
-        # Ponta da cabeça
-        front = self.position + self.direction * self.radius
-
-        # Parte superior e inferior do corpo
-        top = self.position + perpendicular * self.radius * 0.6
-        bottom = self.position - perpendicular * self.radius * 0.6
-
-        # Parte traseira
-        back = self.position - self.direction * self.radius
-
-        # Corpo
-        pygame.draw.polygon(
-            screen,
-            (255, 100, 50),
-            [
-                front,
-                top,
-                back,
-                bottom
-            ]
-        )
-
-        # Cauda
-        tail_center = self.position - self.direction * self.radius
-
-        tail_top = (
-            tail_center
-            + perpendicular * self.radius * 0.7
-            - self.direction * self.radius * 0.8
-        )
-
-        tail_bottom = (
-            tail_center
-            - perpendicular * self.radius * 0.7
-            - self.direction * self.radius * 0.8
-        )
-
-        pygame.draw.polygon(
-            screen,
-            (255, 180, 50),
-            [
-                tail_center,
-                tail_top,
-                tail_bottom
-            ]
-    )
-
-    
+        sprite = self._load_sprite()
+        angle = -pygame.Vector2(1, 0).angle_to(self.direction)
+        rotated_sprite = pygame.transform.rotate(sprite, angle)
+        rect = rotated_sprite.get_rect(center=self.position)
+        screen.blit(rotated_sprite, rect)

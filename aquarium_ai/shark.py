@@ -1,6 +1,12 @@
+from pathlib import Path
+
 import pygame
 
+
 class Shark:
+    _sprite = None
+    _sprite_path = Path(__file__).resolve().parent / "assets" / "sprites" / "shark.png"
+    _sprite_width = 70
 
     def __init__(self, x, y, speed):
         self.position = pygame.Vector2(x, y)
@@ -40,42 +46,20 @@ class Shark:
         )
 
     def draw(self, screen):
+        sprite = self._load_sprite()
+        angle = -pygame.Vector2(1, 0).angle_to(self.direction)
+        rotated_sprite = pygame.transform.rotate(sprite, angle)
+        rect = rotated_sprite.get_rect(center=self.position)
+        screen.blit(rotated_sprite, rect)
 
-            perpendicular = pygame.Vector2(
-                -self.direction.y,
-                self.direction.x
-            )
-
-            front = (
-                self.position
-                + self.direction * self.radius
-            )
-
-            top = (
-                self.position
-                + perpendicular * self.radius * 0.6
-            )
-
-            bottom = (
-                self.position
-                - perpendicular * self.radius * 0.6
-            )
-
-            back = (
-                self.position
-                - self.direction * self.radius
-            )
-
-            pygame.draw.polygon(
-                screen,
-                (100, 120, 140),
-                [
-                    front,
-                    top,
-                    back,
-                    bottom
-                ]
-    )
+    @classmethod
+    def _load_sprite(cls):
+        if cls._sprite is None:
+            source = pygame.image.load(cls._sprite_path).convert_alpha()
+            width = cls._sprite_width
+            height = round(source.get_height() * width / source.get_width())
+            cls._sprite = pygame.transform.smoothscale(source, (width, height))
+        return cls._sprite
 
     def collide_with(self, fish):
         distance = self.position.distance_to(fish.position)
